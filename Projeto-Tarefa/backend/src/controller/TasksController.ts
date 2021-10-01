@@ -7,18 +7,18 @@ export const getTasks = async(request: Request, response: Response) => {
     return response.json(tasks);
 };
  
-export const saveTask = async(request: Request, response: Response) => {
+export const saveTasks = async(request: Request, response: Response) => {
     const task = await getRepository(Tasks).save(request.body)
     return response.json(task);
 };
- 
-export const getTask = async(request: Request, response: Response) => {
+
+export const getAluno = async(request: Request, response: Response) => {
     const {id} = request.params
     const task = await getRepository(Tasks).findOne(id)
     return response.json(task);
 };
- 
-export const updateTask = async(request: Request, response: Response) => {
+
+export const updateAluno = async(request: Request, response: Response) => {
     const {id} = request.params
     const task = await getRepository(Tasks).update(id, request.body)
  
@@ -27,23 +27,23 @@ export const updateTask = async(request: Request, response: Response) => {
         return response.json(taskUpdated);
     }
     else{
-        return response.status(404).json( {message: 'Tarefa não encontrada!'} )
+        return response.status(404).json( {message: 'Aluno não encontrado!'} )
     }
 };
- 
-export const deleteTask = async(request: Request, response: Response) => {
+
+export const deleteAluno = async(request: Request, response: Response) => {
     const {id} = request.params
     const task = await getRepository(Tasks).delete(id)
  
     if (task.affected == 1){
-        return response.status(200).json( {message: "Tarefa excluída com sucesso!"} );
+        return response.status(200).json( {message: "Aluno excluído com sucesso!"} );
     }
     else{
-        return response.status(404).json( {message: 'Tarefa não encontrada!'} )
+        return response.status(404).json( {message: 'Aluno não encontrado!'} )
     }
 };
- 
-export const finishedTask = async(request: Request, response: Response) => {
+
+export const finishedAluno = async(request: Request, response: Response) => {
     const {id} = request.params
     const task = await getRepository(Tasks).update(id, {
         finished: true,
