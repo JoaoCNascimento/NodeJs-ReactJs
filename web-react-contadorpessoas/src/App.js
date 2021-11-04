@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+import { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      qtdPessoas: 0
+    };
+
+    this.updateQtdPessoas = this.updateQtdPessoas.bind(this);
+  }
+
+  updateQtdPessoas(operator) {
+    if(operator === '+')
+      return this.setState({qtdPessoas: this.state.qtdPessoas + 1});
+
+    return this.state.qtdPessoas > 0 ? this.setState({qtdPessoas: this.state.qtdPessoas - 1}) : 0;
+  }
+
+  render() {
+    return(
+      <div>
+        <h1>Contador de pessoas</h1>
+        <div className="container">
+            <div className="counter-container">
+              {this.state.qtdPessoas}
+            </div>
+          {/*  */}
+          <div className="counter-controls">
+            <button onClick={() => {this.updateQtdPessoas('+')}} >+1</button>
+            <button onClick={() => {this.updateQtdPessoas('-')}}  >-1</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+} 
 
 export default App;
