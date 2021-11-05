@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { Alunos } from '../entity/Tasks';
+import { Alunos } from '../entity/Aluno';
 import { Request, Response } from "express";
  
 export const getAlunos = async(request: Request, response: Response) => {
@@ -8,21 +8,21 @@ export const getAlunos = async(request: Request, response: Response) => {
 };
  
 export const saveAlunos = async(request: Request, response: Response) => {
-    const task = await getRepository(Alunos).save(request.body)
-    return response.json(task);
+    const aluno = await getRepository(Alunos).save(request.body)
+    return response.json(aluno);
 };
 
 export const getAluno = async(request: Request, response: Response) => {
     const {id} = request.params
-    const task = await getRepository(Alunos).findOne(id)
-    return response.json(task);
+    const aluno = await getRepository(Alunos).findOne(id)
+    return response.json(aluno);
 };
 
 export const updateAluno = async(request: Request, response: Response) => {
     const {id} = request.params
-    const task = await getRepository(Alunos).update(id, request.body)
+    const aluno = await getRepository(Alunos).update(id, request.body)
  
-    if (task.affected == 1){
+    if (aluno.affected == 1){
         const taskUpdated = await getRepository(Alunos).findOne(id)
         return response.json(taskUpdated);
     }
@@ -33,9 +33,9 @@ export const updateAluno = async(request: Request, response: Response) => {
 
 export const deleteAluno = async(request: Request, response: Response) => {
     const {id} = request.params
-    const task = await getRepository(Alunos).delete(id)
+    const aluno = await getRepository(Alunos).delete(id)
  
-    if (task.affected == 1){
+    if (aluno.affected == 1){
         return response.status(200).json( {message: "Aluno excluído com sucesso!"} );
     }
     else{
@@ -44,18 +44,17 @@ export const deleteAluno = async(request: Request, response: Response) => {
 };
 
 export const finishedAluno = async(request: Request, response: Response) => {
-    const {id} = request.params
-    const task = await getRepository(Alunos).update(id, {
-        matriculado: true,
-    })
+    const {id} = request.params;
+    const aluno = await getRepository(Alunos).findOne(id);
+    const alunoUpdate = await getRepository(Alunos).update(id, {
+        matriculado: !aluno.matriculado
+    });
  
-    if (task.affected == 1){
-        const taskFinished = await getRepository(Alunos).findOne(id)
+    if (alunoUpdate.affected == 1){
+        const taskFinished = await getRepository(Alunos).findOne(id);
         return response.json(taskFinished);
     }
-    else{
-        return response.status(404).json( {message: 'Tarefa não encontrada!'} )
-    }
+    return response.status(404).json( {message: 'Tarefa não encontrada!'} );
 };
 
 
